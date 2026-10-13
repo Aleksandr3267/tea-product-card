@@ -241,6 +241,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .lightbox[open] { display: grid; }
 .lightbox::backdrop { background: rgba(0, 0, 0, .88); }
 .lightbox__img {
+  width: 100%;
   max-width: 571px;
   max-height: 100%;
   object-fit: contain;
