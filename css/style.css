@@ -1,0 +1,297 @@
+/* ==========================================================================
+   Teaboom — карточка товара
+   ========================================================================== */
+
+:root {
+ 
+  --c-surface: #fbfbfb;
+  --c-l-gray: #f6f7f8;
+  --c-text: #222;
+  --c-muted: #444444;
+  --c-border: #e6e2cf;
+  --c-accent: #e9f2c3;
+  --c-accent-dark: #e0b014;
+  --c-green: rgb(128, 188, 20);
+  --c-price: red;
+  --c-dark: #202020;
+
+  --radius: 10px;
+  --container: 1200px;
+  --gap: clamp(16px, 3vw, 40px);
+  --font: "Open Sans", sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--c-text);
+  background-color: var(--c-surface);
+  background-image: url(../assets/bg.webp);
+}
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+.container {
+  width: min(100% - 32px, var(--container));
+  margin-inline: auto;
+}
+
+
+/* ---------- Breadcrumbs ---------- */
+.breadcrumbs { padding-block: 20px 12px; font-size: 12px; color: var(--c-muted); }
+.breadcrumbs ol { display: flex; flex-wrap: wrap; gap: 4px 0; }
+.breadcrumbs li + li::before { content: "–"; margin-inline: 8px; }
+.breadcrumbs a:hover { color: var(--c-text); text-decoration: underline; }
+
+/* ---------- Product layout ---------- */
+.product {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: var(--gap);
+  align-items: start;
+  margin-bottom: 48px;
+}
+
+.product__media {
+  position: relative;
+  margin: 0;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.product__image { width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+
+.product__category {
+  margin: 0 0 6px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--c-muted);
+}
+.product__category a:hover { color: var(--c-text); text-decoration: underline; }
+
+.product__title {
+  margin: 0 0 24px;
+  font-size: clamp(26px, 4vw, 38px);
+  line-height: 1.15;
+  font-weight: 800;
+}
+
+/* ---------- Packs ---------- */
+.packs { margin: 0 0 24px; padding: 0; border: 0; min-width: 0; }
+.packs__legend { padding: 0; margin-bottom: 10px; font-weight: 700; }
+.packs__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+
+.pack { position: relative; }
+.pack__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  margin: 0;
+}
+.pack__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 8px;
+  text-align: center;
+  background: var(--c-surface);
+  border: 2px solid var(--c-border);
+  border-radius: var(--radius);
+  transition: border-color .2s, background-color .2s, box-shadow .2s;
+}
+.pack__weight { font-size: 16px; font-weight: 700; }
+.pack__price { font-size: 12px; color: var(--c-muted); }
+.pack__input:hover + .pack__label { border-color: var(--c-accent-dark); }
+.pack__input:focus-visible + .pack__label { outline: 3px solid #1a73e8; outline-offset: 2px; }
+.pack__input:checked + .pack__label {
+  background: var(--c-l-gray);
+  border-color: var(--c-accent-dark);
+  box-shadow: 0 0 0 1px var(--c-accent-dark);
+}
+.pack__input:checked + .pack__label .pack__price { color: var(--c-text); }
+
+/* ---------- Buy block ---------- */
+.product__buy {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "price btn"
+    "sku   btn";
+  gap: 4px 24px;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 24px;
+  background: var(--c-l-gray);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+}
+.price { grid-area: price; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.price__current { font-size: clamp(28px, 4vw, 36px); font-weight: 800; color: var(--c-price); line-height: 1.1; }
+.price__old { font-size: 16px; color: var(--c-muted); text-decoration: line-through; }
+.price__old[hidden], .price__discount[hidden] { display: none; }
+.price__discount {
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--c-green);
+  border-radius: 6px;
+}
+.product__sku { grid-area: sku; margin: 0; font-size: 13px; color: var(--c-muted); }
+
+.btn-cart {
+  grid-area: btn;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 28px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-dark);
+  background: var(--c-accent);
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background-color .2s, color .2s, transform .1s, box-shadow .2s;
+}
+.btn-cart:hover {
+  background: var(--c-dark);
+  color: var(--c-accent-dark);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .18);
+}
+.btn-cart:active { transform: translateY(1px); }
+.btn-cart:focus-visible { outline: 3px solid #1a73e8; outline-offset: 2px; }
+.btn-cart.is-added { background: var(--c-green); color: #fff; }
+
+/* ---------- Short description ---------- */
+.product__short { font-size: 15px; }
+.product__short p { margin: 0 0 12px; }
+.product__short ul { display: grid; gap: 6px; }
+.product__short li { position: relative; padding-left: 18px; }
+.product__short li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .6em;
+  width: 7px;
+  height: 7px;
+  background: var(--c-accent-dark);
+  border-radius: 50%;
+}
+
+
+/* ---------- Zoom product ---------- */
+
+.product__zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .92);
+  color: var(--c-text);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .15);
+  cursor: zoom-in;
+  opacity: 0;
+  transform: scale(.85);
+  transition: opacity .2s, transform .2s, background-color .2s;
+}
+.product__media:hover .product__zoom,
+.product__zoom:focus-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+.product__zoom:hover { background: var(--c-accent); }
+.product__image { cursor: zoom-in; }
+
+
+@media (hover: none) {
+  .product__zoom { opacity: 1; transform: none; }
+}
+
+.lightbox {
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  padding: 40px;
+  border: 0;
+  background: transparent;
+  place-items: center;
+}
+.lightbox[open] { display: grid; }
+.lightbox::backdrop { background: rgba(0, 0, 0, .88); }
+.lightbox__img {
+  max-width: 571px;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.lightbox__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .15);
+  color: #fff;
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color .2s;
+}
+.lightbox__close:hover { background: rgba(255, 255, 255, .3); }
+
+
+
+
+/* ==========================================================================
+   Tablet ≤ 900px
+   ========================================================================== */
+@media (max-width: 900px) {
+  .product { grid-template-columns: 1fr; }
+  .product__media { max-width: 480px; margin-inline: auto; width: 100%; }
+}
+
+/* ==========================================================================
+   Mobile ≤ 560px
+   ========================================================================== */
+@media (max-width: 560px) {
+  .site-header__inner { justify-content: center; }
+  .main-nav ul { justify-content: center; gap: 4px 16px; }
+  .packs__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .product__buy {
+    grid-template-columns: 1fr;
+    grid-template-areas: "price" "sku" "btn";
+    padding: 16px;
+  }
+  .btn-cart { width: 100%; margin-top: 8px; }
+  .lightbox { padding: 16px; }
+  .lightbox__close { top: 8px; right: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
